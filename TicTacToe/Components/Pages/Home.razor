@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <PageTitle>Tic Tac Toe</PageTitle>
 
@@ -28,8 +28,6 @@
 @code{
     private Board board = new Board();
 
-
-
     public class Board {
         public string[] cellValues { get; set; }
         public bool GameFinished { get; set; }
@@ -39,6 +37,7 @@
         public Board()
         {
             cellValues = new string[9];
+            Message = PlayerTurn ? "X's turn" : "O's turn";
         }
 
         public void MakeMove(int cell)
