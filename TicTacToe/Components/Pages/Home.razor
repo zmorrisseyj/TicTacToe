@@ -1,0 +1,114 @@
+﻿@page "/"
+
+@rendermode InteractiveAuto
+
+<PageTitle>Tic Tac Toe</PageTitle>
+
+
+<table>
+    <tr>
+        <td><button @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
+        <td><button @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
+        <td><button @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
+    </tr>
+    <tr>
+        <td><button @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
+        <td><button @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
+        <td><button @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
+    </tr>
+    <tr>
+        <td><button @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
+        <td><button @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
+        <td><button @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
+    </tr>
+</table>
+
+<p1>@board.Message</p1>
+
+@code{
+    private Board board = new Board();
+
+
+
+    public class Board {
+        public string[] cellValues { get; set; }
+        public bool GameFinished { get; set; }
+        public bool PlayerTurn { get; set; } 
+        public string Message { get; set; }
+
+        public Board()
+        {
+            cellValues = new string[9];
+        }
+
+        public void MakeMove(int cell)
+        {
+            if (GameFinished)
+            {
+                return;
+            }
+
+            if(cell < 0 || 8 < cell)
+            {
+                //out of bounds, never should have come here
+                return;
+            }
+
+            if (string.IsNullOrEmpty(cellValues[cell]))
+            {
+                cellValues[cell] = PlayerTurn ? "X" : "O";
+                PlayerTurn = !PlayerTurn;
+                Message = PlayerTurn ? "X's turn" : "O's turn";
+            }
+            else
+            {
+                Message += $"That cell is already taken!";
+            }
+
+            DetectGameEnd();
+        }
+
+        public void DetectGameEnd()
+        {
+            List<List<int>> winStates = new List<List<int>>
+            {
+                new List<int>{ 0,1,2 },
+                new List<int>{ 3,4,5 },
+                new List<int>{ 6,7,8 },
+                new List<int>{ 0,3,6 },
+                new List<int>{ 1,4,7 },
+                new List<int>{ 2,5,8 },
+                new List<int>{ 1,4,8 },
+                new List<int>{ 2,4,6 }
+            };
+
+            foreach(List<int> winState in winStates)
+            {
+                string cellVal = cellValues[winState[0]];
+                if (string.IsNullOrEmpty(cellVal))
+                {
+                    continue;
+                }
+                if (cellVal == cellValues[winState[1]] && cellVal == cellValues[winState[2]])
+                {
+                    GameFinished = true;
+                    Message = $"{cellValues[winState[0]]} has won the game!";
+                    return;
+                }
+            }
+
+            bool filled = true;
+            foreach(string val in cellValues)
+            {
+                if (string.IsNullOrEmpty(val))
+                {
+                    filled = false;
+                }
+            }
+            if (filled)
+            {
+                Message = "Tie game!";
+            }
+        }
+    }
+}
