@@ -4,26 +4,29 @@
 
 <PageTitle>Tic Tac Toe</PageTitle>
 
+<div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td><button @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
+                <td><button @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
+                <td><button @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
+            </tr>
+            <tr>
+                <td><button @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
+                <td><button @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
+                <td><button @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
+            </tr>
+            <tr>
+                <td><button @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
+                <td><button @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
+                <td><button @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-<table>
-    <tr>
-        <td><button @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
-        <td><button @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
-        <td><button @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
-        <td><button @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
-        <td><button @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
-    </tr>
-    <tr>
-        <td><button @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
-        <td><button @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
-        <td><button @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
-    </tr>
-</table>
-
-<p1>@board.Message</p1>
+<p role="status">@board.Message</p>
 
 @code{
     private Board board = new Board();
