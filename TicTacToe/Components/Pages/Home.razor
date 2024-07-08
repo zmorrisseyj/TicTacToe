@@ -4,23 +4,57 @@
 
 <PageTitle>Tic Tac Toe</PageTitle>
 
-<div>
+<style>
+    .btn {
+        background-color: ghostwhite;
+        min-width: 35px;
+        min-height: 35px;
+        padding: 5px;
+        border: solid 1px black;
+    }
+
+    .btnX {
+        background-color: violet;
+        min-width: 35px;
+        min-height: 35px;
+        padding: 5px;
+        border: solid 1px black;
+    }
+
+    .btnO {
+        background-color: lightskyblue;
+        min-width: 35px;
+        min-height: 35px;
+        padding: 5px;
+        border: solid 1px black;
+    }
+
+    .container {
+        padding: 5px;
+        width: 120px;
+        outline: solid 1px black;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<div class="container">
     <table class="table">
         <tbody>
             <tr>
-                <td><button @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
-                <td><button @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
-                <td><button @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
+                <td><button class="@board.cellTypes[0]" @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
+                <td><button class="@board.cellTypes[1]" @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
+                <td><button class="@board.cellTypes[2]" @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
             </tr>
             <tr>
-                <td><button @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
-                <td><button @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
-                <td><button @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
+                <td><button class="@board.cellTypes[3]" @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
+                <td><button class="@board.cellTypes[4]" @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
+                <td><button class="@board.cellTypes[5]" @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
             </tr>
             <tr>
-                <td><button @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
-                <td><button @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
-                <td><button @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
+                <td><button class="@board.cellTypes[6]" @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
+                <td><button class="@board.cellTypes[7]" @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
+                <td><button class="@board.cellTypes[8]" @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
             </tr>
         </tbody>
     </table>
@@ -33,6 +67,8 @@
 
     public class Board {
         public string[] cellValues { get; set; }
+
+        public string[] cellTypes { get; set; }
         public bool GameFinished { get; set; }
         public bool PlayerTurn { get; set; } 
         public string Message { get; set; }
@@ -40,7 +76,27 @@
         public Board()
         {
             cellValues = new string[9];
+            cellTypes = new string[9];
+            for(int i = 0; i < 9; i++)
+            {
+                cellTypes[i] = "btn";
+            }
             Message = PlayerTurn ? "X's turn" : "O's turn";
+        }
+
+        public string GetButtonType(string str)
+        {
+            switch (str)
+            {
+                case "O":
+                    return "btnO";
+
+                case "X":
+                    return "btnX";
+
+                default:
+                    return "btn";
+            }    
         }
 
         public void MakeMove(int cell)
@@ -59,6 +115,7 @@
             if (string.IsNullOrEmpty(cellValues[cell]))
             {
                 cellValues[cell] = PlayerTurn ? "X" : "O";
+                cellTypes[cell] = GetButtonType(cellValues[cell]);
                 PlayerTurn = !PlayerTurn;
                 Message = PlayerTurn ? "X's turn" : "O's turn";
             }
