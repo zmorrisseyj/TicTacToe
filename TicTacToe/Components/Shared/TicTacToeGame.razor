@@ -1,0 +1,236 @@
+﻿
+
+<style>
+    .btn {
+        background-color: ghostwhite;
+        min-width: 35px;
+        min-height: 35px;
+        height: 100%;
+        width: 100%;
+        border: solid 1px black;
+        display: flex;
+        table-layout: auto;
+        justify-content: center;
+        align-content: center;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btnX {
+        background-color: violet;
+        min-width: 35px;
+        min-height: 35px;
+        height: 100%;
+        width: 100%;
+        border: solid 1px black;
+        display: flex;
+        table-layout: auto;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .btnO {
+        background-color: lightskyblue;
+        min-width: 35px;
+        min-height: 35px;
+        height: 100%;
+        width: 100%;
+        border: solid 1px black;
+        display: flex;
+        table-layout: auto;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .table {
+        width: 100%;
+        height: 100%;
+        border-collapse: collapse;
+    }
+
+    .td {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .tr {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+
+    .container {
+        height: 100%;
+        width: 100%;
+        padding: 5px;
+        outline: solid 1px black;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .square { 
+        /* square scaling based on width */
+
+        /* width: 100%;
+        height: 0;
+        padding-top: 100%; */
+
+        aspect-ratio: 1 / 1;
+        /* square scaling based on height ?? not working */
+        /* height: 100%;
+            width: 0;
+            padding-left:100%; */
+    }
+</style>
+
+<div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <table class="table square">
+                    <tbody>
+                        <tr>
+                            <td><button class="@board.cellTypes[0] square" @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
+                            <td><button class="@board.cellTypes[1] square" @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
+                            <td><button class="@board.cellTypes[2] square" @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class="@board.cellTypes[3] square" @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
+                            <td><button class="@board.cellTypes[4] square" @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
+                            <td><button class="@board.cellTypes[5] square" @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class="@board.cellTypes[6] square" @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
+                            <td><button class="@board.cellTypes[7] square" @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
+                            <td><button class="@board.cellTypes[8] square" @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tr>
+            <tr>
+                <p role="status">@board.Message</p>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@code {
+    private Board board = new Board();
+
+    public class Board
+    {
+        public string[] cellValues { get; set; }
+
+        public string[] cellTypes { get; set; }
+        public bool GameFinished { get; set; }
+        public bool PlayerTurn { get; set; }
+        public string Message { get; set; }
+
+        public Board()
+        {
+            cellValues = new string[9];
+            cellTypes = new string[9];
+            for (int i = 0; i < 9; i++)
+            {
+                cellTypes[i] = "btn";
+            }
+            Message = PlayerTurn ? "X's turn" : "O's turn";
+        }
+
+        public string GetButtonType(string str)
+        {
+            switch (str)
+            {
+                case "O":
+                    return "btnO";
+
+                case "X":
+                    return "btnX";
+
+                default:
+                    return "btn";
+            }
+        }
+
+        public void MakeMove(int cell)
+        {
+            if (GameFinished)
+            {
+                return;
+            }
+
+            if (cell < 0 || 8 < cell)
+            {
+                //out of bounds, never should have come here
+                return;
+            }
+
+            if (string.IsNullOrEmpty(cellValues[cell]))
+            {
+                cellValues[cell] = PlayerTurn ? "X" : "O";
+                cellTypes[cell] = GetButtonType(cellValues[cell]);
+                PlayerTurn = !PlayerTurn;
+                Message = PlayerTurn ? "X's turn" : "O's turn";
+            }
+            else
+            {
+                Message += $"\nThat cell is already taken!";
+            }
+
+            DetectGameEnd();
+        }
+
+        public void DetectGameEnd()
+        {
+            List<List<int>> winStates = new List<List<int>>
+            {
+                new List<int>{ 0,1,2 },
+                new List<int>{ 3,4,5 },
+                new List<int>{ 6,7,8 },
+                new List<int>{ 0,3,6 },
+                new List<int>{ 1,4,7 },
+                new List<int>{ 2,5,8 },
+                new List<int>{ 0,4,8 },
+                new List<int>{ 2,4,6 }
+            };
+
+            foreach (List<int> winState in winStates)
+            {
+                string cellVal = cellValues[winState[0]];
+                if (string.IsNullOrEmpty(cellVal))
+                {
+                    continue;
+                }
+                if (cellVal == cellValues[winState[1]] && cellVal == cellValues[winState[2]])
+                {
+                    GameFinished = true;
+                    Message = $"{cellValues[winState[0]]} has won the game!";
+                    return;
+                }
+            }
+
+            bool filled = true;
+            foreach (string val in cellValues)
+            {
+                if (string.IsNullOrEmpty(val))
+                {
+                    filled = false;
+                }
+            }
+            if (filled)
+            {
+                Message = "Tie game!";
+            }
+        }
+    }
+}
