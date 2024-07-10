@@ -75,51 +75,43 @@
         align-content: center;
     }
 
-    .square { 
+    .square {
         /* square scaling based on width */
-
         /* width: 100%;
-        height: 0;
-        padding-top: 100%; */
+            height: 0;
+            padding-top: 100%; */
 
         aspect-ratio: 1 / 1;
         /* square scaling based on height ?? not working */
         /* height: 100%;
-            width: 0;
-            padding-left:100%; */
+                width: 0;
+                padding-left:100%; */
     }
 </style>
 
-<div>
-    <table class="table">
-        <tbody>
-            <tr>
-                <table class="table square">
-                    <tbody>
-                        <tr>
-                            <td><button class="@board.cellTypes[0] square" @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
-                            <td><button class="@board.cellTypes[1] square" @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
-                            <td><button class="@board.cellTypes[2] square" @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="@board.cellTypes[3] square" @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
-                            <td><button class="@board.cellTypes[4] square" @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
-                            <td><button class="@board.cellTypes[5] square" @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="@board.cellTypes[6] square" @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
-                            <td><button class="@board.cellTypes[7] square" @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
-                            <td><button class="@board.cellTypes[8] square" @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </tr>
-            <tr>
-                <p role="status">@board.Message</p>
-            </tr>
-        </tbody>
-    </table>
-</div>
+
+<table class="table square">
+    <tbody>
+        <tr>
+            <td><button class="@board.cellTypes[0] square" @onclick="(() => board.MakeMove(0))">@(board.cellValues[0] is null ? " " : board.cellValues[0])</button></td>
+            <td><button class="@board.cellTypes[1] square" @onclick="(() => board.MakeMove(1))">@(board.cellValues[1] is null ? " " : board.cellValues[1])</button></td>
+            <td><button class="@board.cellTypes[2] square" @onclick="(() => board.MakeMove(2))">@(board.cellValues[2] is null ? " " : board.cellValues[2])</button></td>
+        </tr>
+        <tr>
+            <td><button class="@board.cellTypes[3] square" @onclick="(() => board.MakeMove(3))">@(board.cellValues[3] is null ? " " : board.cellValues[3])</button></td>
+            <td><button class="@board.cellTypes[4] square" @onclick="(() => board.MakeMove(4))">@(board.cellValues[4] is null ? " " : board.cellValues[4])</button></td>
+            <td><button class="@board.cellTypes[5] square" @onclick="(() => board.MakeMove(5))">@(board.cellValues[5] is null ? " " : board.cellValues[5])</button></td>
+        </tr>
+        <tr>
+            <td><button class="@board.cellTypes[6] square" @onclick="(() => board.MakeMove(6))">@(board.cellValues[6] is null ? " " : board.cellValues[6])</button></td>
+            <td><button class="@board.cellTypes[7] square" @onclick="(() => board.MakeMove(7))">@(board.cellValues[7] is null ? " " : board.cellValues[7])</button></td>
+            <td><button class="@board.cellTypes[8] square" @onclick="(() => board.MakeMove(8))">@(board.cellValues[8] is null ? " " : board.cellValues[8])</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<p role="status">@board.Message</p>
+
 
 
 
